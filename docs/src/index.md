@@ -36,7 +36,7 @@ nothing # hide
 
 ![install test image](assets/test_install.png)
 
-## System Image
+### System Image
 
 We recommend compiling a custom [Julia system image](https://julialang.github.io/PackageCompiler.jl/dev/sysimages) for the OpticSim.jl package to reduce startup time and improve first-time performance.
 If you are using VSCode as your IDE you can create a sysimage by opening the commant palette (CTRL-shift-P), Tasks: Run Build Task, julia: Build custom sysimage for current environment.
