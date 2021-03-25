@@ -11,8 +11,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ['1.4', '1.5', 'nightly']
-        os: [ubuntu-18.04, ubuntu-latest, windows-latest]
+        version: ['1.5', 'nightly']
+        os: [ubuntu-18.04, windows-latest]
         arch: [x64]
     env:
       DISPLAY: :0
