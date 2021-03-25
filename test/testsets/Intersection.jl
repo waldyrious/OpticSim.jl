@@ -1,4 +1,4 @@
-@testset "Intersection" begin
+@time @testset "Intersection" begin
     function samplepoints(numsamples, lowu, highu, lowv, highv)
         samples = Array{Tuple{Float64,Float64},1}(undef, 0)
 
@@ -12,22 +12,7 @@
         return samples
     end
 
-    @testset "Cylinder" begin
-        # Random.seed!(SEED)
-
-        # # random point intersections
-        # ur, vr = uvrange(Cylinder)
-        # for i in 1:10000
-        #     cyl = Cylinder(rand() * 3.0, rand() * 50.0)
-        #     u, v = rand() * (ur[2] - ur[1]) + ur[1], rand() * (vr[2] - vr[1]) + vr[1]
-        #     pointon = point(cyl, u, v)
-        #     origin = SVector(4.0, 4.0, 4.0)
-        #     r = Ray(origin, pointon .- origin)
-        #     halfspace = surfaceintersection(cyl, r)
-        #     @test halfspace !== nothing && !((lower(halfspace) isa RayOrigin) || (upper(halfspace) isa Infinity))
-        #     @test isapprox(pointon, point(lower(halfspace)), rtol = RTOLERANCE, atol = ATOLERANCE) || isapprox(pointon, point(upper(halfspace)), rtol = RTOLERANCE, atol = ATOLERANCE)
-        # end
-
+    @time @testset "Cylinder" begin
         # on xy
         cyl = Cylinder(0.5)
         r = Ray([1.0, 1.0, 0.0], [-1.0, -1.0, 0.0])
@@ -69,22 +54,7 @@
         @test intscts isa EmptyInterval
     end # testset cylinder
 
-    @testset "Sphere" begin
-        # Random.seed!(SEED)
-
-        # # random point intersections
-        # ur, vr = uvrange(Sphere)
-        # for i in 1:10000
-        #     sph = Sphere(rand() * 3)
-        #     u, v = rand() * (ur[2] - ur[1]) + ur[1], rand() * (vr[2] - vr[1]) + vr[1]
-        #     pointon = point(sph, u, v)
-        #     origin = SVector(4.0, 4.0, 4.0)
-        #     r = Ray(origin, pointon .- origin)
-        #     halfspace = surfaceintersection(sph, r)
-        #     @test halfspace !== nothing && !((lower(halfspace) isa RayOrigin) || (upper(halfspace) isa Infinity))
-        #     @test isapprox(pointon, point(lower(halfspace)), rtol = RTOLERANCE, atol = ATOLERANCE) || isapprox(pointon, point(upper(halfspace)), rtol = RTOLERANCE, atol = ATOLERANCE)
-        # end
-
+    @time @testset "Sphere" begin
         # on xy plane
         sph = Sphere(0.5)
         r = Ray([1.0, 1.0, 0.0], [-1.0, -1.0, 0.0])
@@ -122,7 +92,7 @@
         @test intscts isa EmptyInterval
     end # testset sphere
 
-    @testset "Spherical Cap" begin
+    @time @testset "Spherical Cap" begin
         @test_throws AssertionError SphericalCap(0.0, 1.0)
         @test_throws AssertionError SphericalCap(1.0, 0.0)
 
@@ -140,7 +110,7 @@
         @test surfaceintersection(sph, r) isa EmptyInterval
     end # testset spherical cap
 
-    @testset "Triangle" begin
+    @time @testset "Triangle" begin
         Random.seed!(SEED)
 
         tri = Triangle(SVector{3}(2.0, 1.0, 1.0), SVector{3}(1.0, 2.0, 1.0), SVector{3}(1.0, 1.0, 2.0), SVector{2}(0.0, 0.0), SVector{2}(1.0, 0.0), SVector{2}(0.5, 0.5))
@@ -174,7 +144,7 @@
         @test intsct isa EmptyInterval
     end # testset triangle
 
-    @testset "Plane" begin
+    @time @testset "Plane" begin
         rinplane = Ray([0.0, 0.0, 1.0], [1.0, 1.0, 0.0])
         routside = Ray([0.0, 0.0, 2.0], [1.0, 1.0, 1.0])
         rinside = Ray([0.0, 0.0, -1.0], [1.0, 1.0, -1.0])
@@ -203,7 +173,7 @@
         @test lower(res) isa RayOrigin && isapprox(point(upper(res)), [0.0, 0.0, 1.0], rtol = RTOLERANCE, atol = ATOLERANCE)
     end # testset plane
 
-    @testset "Rectangle" begin
+    @time @testset "Rectangle" begin
         @test_throws AssertionError Rectangle(0.0, 1.0)
         @test_throws AssertionError Rectangle(1.0, 0.0)
 
@@ -259,7 +229,7 @@
         @test surfaceintersection(rect2, raymiss) isa EmptyInterval
     end # testset Rectangle
 
-    @testset "Ellipse" begin
+    @time @testset "Ellipse" begin
         @test_throws AssertionError Ellipse(0.0, 1.0)
         @test_nowarn Circle(0.5)
 
@@ -324,7 +294,7 @@
         @test surfaceintersection(ell2, raymiss) isa EmptyInterval
     end # testset Ellipse
 
-    @testset "Hexagon" begin
+    @time @testset "Hexagon" begin
         @test_nowarn Hexagon(0.5)
 
         rinplane = Ray([0.0, 0.0, 0.0], [1.0, 1.0, 0.0])
@@ -388,7 +358,7 @@
         @test surfaceintersection(hex2, raymiss) isa EmptyInterval
     end # testset Hexagon
 
-    @testset "Stops" begin
+    @time @testset "Stops" begin
         infiniterect = RectangularAperture(0.4, 0.8, SVector(0.0, 1.0, 0.0), SVector(0.0, 0.0, 1.0))
         finiterect = RectangularAperture(0.4, 0.8, 1.0, 2.0, SVector(0.0, 1.0, 0.0), SVector(0.0, 0.0, 1.0))
         # through hole
@@ -472,7 +442,7 @@
         @test surfaceintersection(annulus, r) isa EmptyInterval
     end # testset Stops
 
-    @testset "Bezier" begin
+    @time @testset "Bezier" begin
         surf = TestData.beziersurface()
         accelsurf = AcceleratedParametricSurface(surf)
         numsamples = 100
@@ -580,7 +550,7 @@
         @test isa(res, DisjointUnion) && length(res) == 2 && a && b
     end # testset Bezier
 
-    @testset "Zernike" begin
+    @time @testset "Zernike" begin
         @test_nowarn ZernikeSurface(1.5)
         @test_throws AssertionError ZernikeSurface(0.0)
         @test_throws AssertionError ZernikeSurface(1.5, aspherics = [(1, 0.1)])
@@ -697,7 +667,7 @@
         @test !(surfaceintersection(o2, r) isa EmptyInterval)
     end # testset Zernike
 
-    @testset "QType" begin
+    @time @testset "QType" begin
         @test_nowarn QTypeSurface(1.5)
         @test_throws AssertionError QTypeSurface(0.0)
 
@@ -767,7 +737,7 @@
         @test surfaceintersection(aq1, r) isa EmptyInterval
     end # testset QType
 
-    @testset "BoundingBox" begin
+    @time @testset "BoundingBox" begin
         function boundingval(a::BoundingBox{T}, axis::Int, plane::Bool) where {T<:Real}
             if axis === 1
                 return plane ? a.xmax : a.xmin
@@ -865,7 +835,7 @@
         @test intscts isa EmptyInterval
     end # testset BoundingBox
 
-    @testset "CSG" begin
+    @time @testset "CSG" begin
         pln1 = Plane([0.0, 0.0, -1.0], [0.0, 0.0, -1.0])
         pln2 = Plane([0.0, 0.0, 1.0], [0.0, 0.0, 1.0])
         r = Ray([0.0, 0, 2.0], [0.0, 0.0, -1.0])
@@ -984,7 +954,7 @@
         @test isa(res, DisjointUnion) && length(res) == 3 && a && b && c
     end # testset CSG
 
-    @testset "ThinGrating" begin
+    @time @testset "ThinGrating" begin
         angle_from_ray(raydirection) = 90 + atand(raydirection[3], raydirection[2])
         true_diff(order, λ, period, θi) = asind((order * λ / period + sind(θi)))
         period = 3.0
@@ -1003,7 +973,7 @@
 
     # TODO Hologram intersection tests
 
-    @testset "Chebyshev" begin
+    @time @testset "Chebyshev" begin
         @test_throws AssertionError ChebyshevSurface(0.0, 1.0, [(1, 2, 1.0)])
         @test_throws AssertionError ChebyshevSurface(1.0, 0.0, [(1, 2, 1.0)])
 
@@ -1098,7 +1068,7 @@
 
     end # testset Chebyshev
 
-    @testset "GridSag" begin
+    @time @testset "GridSag" begin
         z1 = TestData.gridsagsurfacebicubic()
         az1 = AcceleratedParametricSurface(z1, 20)
 

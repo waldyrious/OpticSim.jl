@@ -1,5 +1,5 @@
 @testset "Comparison" begin
-    @testset "Refraction" begin
+    @time @testset "Refraction" begin
         λ = 0.550
         r1 = OpticalRay([0.0, 0.0, 1.0], [0.0, 0.0, -1.0], 1.0, λ)
         r2 = OpticalRay([2.0, 2.0, 1.0], [0.0, 0.0, -1.0], 1.0, λ)
@@ -94,7 +94,7 @@
         @test isapprox(pathlength(res), 74.6175821043825, rtol = COMP_TOLERANCE)
     end # testset Refraction
 
-    @testset "Temperature/Pressure" begin
+    @time @testset "Temperature/Pressure" begin
         λ = 0.550
         r1 = OpticalRay([0.0, 0.0, 1.0], [0.0, 0.0, -1.0], 1.0, λ)
         r2 = OpticalRay([2.0, 2.0, 1.0], [0.0, 0.0, -1.0], 1.0, λ)
@@ -119,7 +119,7 @@
         r5 = OpticalRay([-5.0, -5.0, 1.0], [0.08715574274765818, -0.01738599476176408, -0.9960429728140486], 1.0, λ2)
     end # testset Temperature/Pressure
 
-    @testset "Reflection" begin
+    @time @testset "Reflection" begin
         λ = 0.550
         r1 = OpticalRay([0.0, 0.0, 1.0], [0.0, 0.0, -1.0], 1.0, λ)
         r2 = OpticalRay([2.0, 2.0, 1.0], [0.0, 0.0, -1.0], 1.0, λ)
@@ -145,7 +145,7 @@
         @test isapprox(pathlength(res), 87.4033932087711, rtol = COMP_TOLERANCE)
     end # testset Reflection
 
-    @testset "Complex Lenses" begin
+    @time @testset "Complex Lenses" begin
         λ = 0.550
         r1 = OpticalRay([0.0, 0.0, 1.0], [0.0, 0.0, -1.0], 1.0, λ)
         r2 = OpticalRay([2.0, 2.0, 1.0], [0.0, 0.0, -1.0], 1.0, λ)
@@ -262,7 +262,7 @@
         @test isapprox(pathlength(res), 74.6955888563913, rtol = COMP_TOLERANCE)
     end #testset complex lenses
 
-    # @testset "Power" begin
+    # @time @testset "Power" begin
     #     λ = 0.550
     #     r1 = OpticalRay([0.0, 0.0, 1.0], [0.0, 0.0, -1.0], 1.0, λ)
     #     r2 = OpticalRay([2.0, 2.0, 1.0], [0.0, 0.0, -1.0], 1.0, λ)

@@ -1,5 +1,5 @@
 @testset "General" begin
-    @testset "QuadraticRoots" begin
+    @time @testset "QuadraticRoots" begin
         Random.seed!(SEED)
         similarroots(r1, r2, x1, x2) = isapprox([r1, r2], [x1, x2], rtol = 1e-9) || isapprox([r2, r1], [x1, x2], rtol = 1e-9)
 
@@ -19,7 +19,7 @@
         @test similarroots(-1, -1, x1, x2)
     end # testset QuadraticRoots
 
-    @testset "RigidBodyTransform" begin
+    @time @testset "RigidBodyTransform" begin
         Random.seed!(SEED)
         @test isapprox(rotmatd(180, 0, 0), [1.0 0.0 0.0; 0.0 -1.0 0.0; 0.0 0.0 -1.0], rtol = RTOLERANCE, atol = ATOLERANCE)
         @test isapprox(rotmatd(0.0, 180.0, 0.0), [-1.0 0.0 0.0; 0.0 1.0 0.0; 0.0 0.0 -1.0], rtol = RTOLERANCE, atol = ATOLERANCE)
@@ -40,7 +40,7 @@
         @test isapprox(collect(inv(ta)), collect(RigidBodyTransform(rotmatd(0, -90, 0), SVector(1.0, 0.0, 0.0))), rtol = RTOLERANCE, atol = ATOLERANCE)
     end # testset RigidBodyTransform
 
-    @testset "Interval" begin
+    @time @testset "Interval" begin
         pt1 = Intersection(0.3, [4.0, 5.0, 6.0], normalize(rand(3)), 0.4, 0.5, NullInterface())
         pt2 = Intersection(0.5, [1.0, 2.0, 3.0], normalize(rand(3)), 0.2, 0.3, NullInterface())
         @test pt1 < pt2 && pt1 <= pt2 && pt2 > pt1 && pt2 >= pt1 && pt1 != pt2 && pt1 <= pt1

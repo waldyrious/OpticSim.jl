@@ -22,8 +22,8 @@
 
 @testset "GlassCat" begin
     # ensure there aren't any ambiguities
-    @test isempty(detect_ambiguities(GlassCat))
-    @test isempty(detect_unbound_args(GlassCat))
+    @time @test isempty(detect_ambiguities(GlassCat))
+    @time @test isempty(detect_unbound_args(GlassCat))
 
     include(joinpath("..", "..", "src", "GlassCat", "GlassTypes.jl"))
     include(joinpath(@__DIR__, "..", "..", "deps", "generate.jl"))
@@ -37,7 +37,7 @@
 
     cat = Dict()
 
-    @testset "Parsing Tests" begin
+    @time @testset "Parsing Tests" begin
         cat = sourcefile_to_catalog(SOURCE_FILE)
 
         # test that all glasses were parsed correctly
@@ -95,7 +95,7 @@
         @test glass["transmission"] == [[2.0, 1.0, 3.0], [14.0, 4.0, 5.0]]
     end
 
-    @testset "Module Gen Tests" begin
+    @time @testset "Module Gen Tests" begin
         generate_jls([CATALOG_NAME], MAIN_FILE, JL_DIR, SOURCE_DIR)
         include(MAIN_FILE)
 
@@ -151,7 +151,7 @@
         @test glass.λmax == glassd["λmax"]
     end
 
-    @testset "Glass Tests" begin
+    @time @testset "Glass Tests" begin
         include(MAIN_FILE)
 
         g = TEST_CAT.MG523
@@ -214,6 +214,6 @@
         @test OpticSim.GlassCat.index(OpticSim.GlassCat.CARGILLE.OG0608, 0.578) == 1.4596475735607324
 
         # make sure that the other functions work
-        OpticSim.GlassCat.plot_indices(OpticSim.GlassCat.SCHOTT.N_BK7; polyfit = true, fiterror = true)
+        @time OpticSim.GlassCat.plot_indices(OpticSim.GlassCat.SCHOTT.N_BK7; polyfit = true, fiterror = true)
     end
 end # testset GlassCat
