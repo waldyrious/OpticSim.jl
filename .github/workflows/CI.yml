@@ -14,6 +14,9 @@ jobs:
         version: ['1.5', 'nightly']
         os: [ubuntu-18.04, windows-latest]
         arch: [x64]
+        include:
+          - os: ubuntu-18.04
+            prefix: xvfb-run
     env:
       DISPLAY: :0
     steps:
@@ -26,9 +29,9 @@ jobs:
       - name: Install GR dependencies (Linux)
         if: runner.os == 'Linux'
         run: sudo apt install libxt6 libxrender1 libxext6 libgl1-mesa-glx libqt5widgets5
-      - name: Start Xvfb server (Linux)
-        if: runner.os == 'Linux'
-        run: sudo /usr/bin/Xvfb $DISPLAY &
+      # - name: Start Xvfb server (Linux)
+      #   if: runner.os == 'Linux'
+      #   run: sudo /usr/bin/Xvfb $DISPLAY &
       - name: Install Mesa (Windows only)
         if: runner.os == 'Windows'
         shell: cmd
@@ -49,8 +52,12 @@ jobs:
             ${{ runner.os }}-${{ matrix.arch }}-test-
             ${{ runner.os }}-${{ matrix.arch }}-
             ${{ runner.os }}-
-      - uses: julia-actions/julia-buildpkg@master
+      - uses: alfredclwong/julia-buildpkg@master
+        with:
+          prefix: ${{ matrix.prefix }}
       - uses: julia-actions/julia-runtest@latest
+        with:
+          prefix: ${{ matrix.prefix }}
       - uses: julia-actions/julia-processcoverage@v1
       - uses: codecov/codecov-action@v1
         with:
