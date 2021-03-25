@@ -78,7 +78,7 @@ end
 include("Benchmarks/Benchmarks.jl")
 
 alltestsets = [
-    "JuliaLang",
+    # "JuliaLang",
     # "BVH",
     "TestData",
     # "Examples", # slow
