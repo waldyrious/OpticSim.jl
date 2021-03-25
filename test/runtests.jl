@@ -94,4 +94,4 @@ alltestsets = [
 ]
 
 runtestsets = ALL_TESTS ? alltestsets : intersect(alltestsets, ARGS)
-include.([joinpath(TESTSET_DIR, testset) for testset in runtestsets])
+include.([joinpath(TESTSET_DIR, "$(testset).jl") for testset in runtestsets])
