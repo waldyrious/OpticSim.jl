@@ -1,4 +1,4 @@
-@otestset "Visualization" begin
+@testset "Visualization" begin
     # test that this all at least runs
     surf1 = AcceleratedParametricSurface(TestData.beziersurface(), 15)
     surf2 = AcceleratedParametricSurface(TestData.upsidedownbeziersurface(), 15)
